@@ -104,6 +104,9 @@ export const build = async (options: BuildOptions): Promise<BuildResult> => {
   const { argv, outputBasePath, path, sourceFile } = options;
   const { html = true, out, plain, props = '{}', usePreviewProps, writeToFile = true } = argv;
   const compiledPath = isWindows ? pathToFileURL(normalizePath(path)).toString() : path;
+
+  await new Promise((res) => setTimeout(res, 1000))
+
   const template = await import(compiledPath);
   // proper named export
   const componentExport: TemplateFn = template.Template;
