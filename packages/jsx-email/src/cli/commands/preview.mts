@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import { existsSync } from 'node:fs';
 import { mkdir, rmdir } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import react from '@vitejs/plugin-react';
@@ -17,7 +17,7 @@ import { reloadPlugin } from '../vite-reload.mjs';
 import { staticPlugin } from '../vite-static.mjs';
 import { watch } from '../watcher.mjs';
 
-import { getTempPath } from './build.mjs';
+import { getTempPath, normalizePath } from './build.mjs';
 import {
   type CommandFn,
   type PreviewCommandOptions,
@@ -162,7 +162,8 @@ export const command: CommandFn = async (argv: PreviewCommandOptions, input) => 
   assert(PreviewCommandOptionsStruct, argv);
 
   const [target] = input;
-  const targetPath = resolve(target);
+  // const targetPath = resolve(target);
+  const targetPath = normalizePath(resolve(target))
 
   if (!existsSync(targetPath)) {
     newline();
